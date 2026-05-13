@@ -1,0 +1,264 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NERV COMMAND CENTER - Terminal 01</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Share+Tech+Mono&display=swap');
+
+        :root {
+            --nerv-orange: #fb923c;
+            --nerv-red: #ff0000;
+            --nerv-dark: #0a0a0a;
+        }
+
+        body {
+            font-family: 'Share Tech Mono', monospace;
+            background-color: var(--nerv-dark);
+            color: var(--nerv-orange);
+            overflow-x: hidden;
+        }
+
+        /* Scanline Effect */
+        body::before {
+            content: " ";
+            display: block;
+            position: fixed;
+            top: 0; left: 0; bottom: 0; right: 0;
+            background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.25) 50%), 
+                        linear-gradient(90deg, rgba(255, 0, 0, 0.06), rgba(0, 255, 0, 0.02), rgba(0, 0, 255, 0.06));
+            z-index: 9999;
+            background-size: 100% 4px, 3px 100%;
+            pointer-events: none;
+        }
+
+        .emergency-flash { animation: flash 0.6s infinite; }
+        @keyframes flash {
+            0%, 100% { background-color: #ff0000; color: black; }
+            50% { background-color: #300000; color: #ff0000; }
+        }
+
+        .hex-bg {
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='28' height='49' viewBox='0 0 28 49'%3E%3Cpath fill='%23fb923c' fill-opacity='0.03' d='M13.99 9.25l13 7.5v15l-13 7.5L1 31.75v-15l12.99-7.5z'/%3E%3C/svg%3E");
+        }
+
+        .hidden-section { display: none; }
+        .nerv-btn { border: 1px solid var(--nerv-orange); transition: all 0.3s; cursor: pointer; }
+        .nerv-btn:hover { background: var(--nerv-orange); color: black; box-shadow: 0 0 15px var(--nerv-orange); }
+
+        .status-bar { height: 4px; background: #333; overflow: hidden; }
+        .status-fill { height: 100%; background: var(--nerv-orange); transition: width 0.5s; }
+        
+        .profile-img-container {
+            position: relative;
+            box-shadow: 0 0 20px rgba(251, 146, 60, 0.2);
+        }
+
+        .data-card {
+            border: 1px solid #441a05;
+            background: rgba(20, 20, 20, 0.8);
+            padding: 1rem;
+            transition: all 0.3s;
+        }
+        .data-card:hover {
+            border-color: var(--nerv-orange);
+            background: rgba(40, 20, 0, 0.4);
+        }
+    </style>
+</head>
+<body class="hex-bg pb-20">
+
+    <div class="emergency-flash py-1 px-4 flex justify-between items-center text-[10px] font-black tracking-[0.3em]">
+        <span>WARNING: 4TH ANGEL DETECTED</span>
+        <span class="hidden md:block">CENTRAL DOGMA SECURE</span>
+        <span>LEVEL EE ACCESS ONLY</span>
+    </div>
+
+    <nav class="p-6 border-b-2 border-orange-600 bg-black sticky top-0 z-50">
+        <div class="container mx-auto flex flex-col md:flex-row justify-between items-center gap-4">
+            <div onclick="show('lobby')" class="cursor-pointer group">
+                <h1 class="text-3xl font-black tracking-tighter text-orange-500 group-hover:text-white transition">NERV <span class="font-light text-sm">OS.v3</span></h1>
+            </div>
+            <div class="flex flex-wrap justify-center gap-2 text-xs">
+                <button onclick="show('lobby')" class="nerv-btn px-4 py-1 uppercase">Main_Hub</button>
+                <button onclick="show('profile')" class="nerv-btn px-4 py-1 bg-orange-600 text-black border-none font-bold uppercase">Pilot_Profile</button>
+                <button onclick="show('watch')" class="nerv-btn px-4 py-1 uppercase">Visual_Sync</button>
+                <button onclick="show('read')" class="nerv-btn px-4 py-1 uppercase">Data_Archive</button>
+                <button onclick="show('chars')" class="nerv-btn px-4 py-1 uppercase">Bio_Link</button>
+                <button onclick="show('eva-angel')" class="nerv-btn px-4 py-1 bg-orange-900 text-white border-none uppercase">Tactical_DB</button>
+            </div>
+        </div>
+    </nav>
+
+    <main class="container mx-auto mt-10 px-4">
+
+        <section id="lobby" class="content-section hidden-section">
+            <div class="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-10 text-center md:text-left">
+                <div class="border border-orange-900 bg-zinc-950 p-4 relative">
+                    <div class="text-[10px] absolute top-0 left-0 bg-orange-900 px-2 text-black font-bold">MAGI_STATUS</div>
+                    <div class="mt-4 space-y-2">
+                        <div class="flex justify-between text-xs"><span>MELCHIOR</span><span class="text-green-500">YES</span></div>
+                        <div class="flex justify-between text-xs"><span>BALTHASAR</span><span class="text-green-500">YES</span></div>
+                        <div class="flex justify-between text-xs border-b border-orange-900 pb-2"><span>CASPER</span><span class="text-red-500 uppercase font-bold">Agree</span></div>
+                    </div>
+                </div>
+                <div class="border border-red-900 bg-zinc-950 p-4 flex flex-col items-center justify-center">
+                    <span class="text-[10px] text-red-600 mb-1 uppercase tracking-widest">AT-Field Strength</span>
+                    <div class="text-5xl font-bold text-white tracking-widest">402.9</div>
+                </div>
+                <div class="border border-orange-900 bg-zinc-950 p-4 text-[11px] space-y-1 italic opacity-80">
+                    <p>> System online...</p>
+                    <p>> Waiting for Pilot...</p>
+                </div>
+            </div>
+
+            <div class="max-w-4xl mx-auto border-2 border-orange-600 p-8 bg-black/60 text-center">
+                <h2 class="text-2xl font-bold mb-6 border-b border-orange-600 pb-2 uppercase tracking-[0.2em]">Pusat Komando Utama</h2>
+                <p class="mb-8 opacity-70">Selamat datang kembali, Pilot. Semua sistem berjalan normal.</p>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div onclick="show('profile')" class="border border-orange-900 p-6 hover:bg-orange-600 hover:text-black cursor-pointer transition uppercase font-bold">Buka Profil Pilot</div>
+                    <div onclick="show('watch')" class="border border-orange-900 p-6 hover:bg-orange-600 hover:text-black cursor-pointer transition uppercase font-bold">Tonton Anime</div>
+                </div>
+            </div>
+        </section>
+
+        <section id="profile" class="content-section">
+            <h2 class="text-2xl font-bold uppercase mb-6 border-l-8 border-orange-500 pl-4 tracking-widest">Pilot Profile: Subject M-01</h2>
+            <div class="max-w-5xl mx-auto border-2 border-orange-600 p-6 md:p-10 bg-black/80 relative overflow-hidden">
+                <div class="absolute top-0 right-0 bg-orange-600 text-black px-4 py-1 text-[10px] font-bold uppercase tracking-widest">
+                    Top Secret: EE-Access
+                </div>
+                
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-10 items-center">
+                    <div class="relative group mx-auto md:mx-0">
+                        <div class="absolute -inset-1 bg-orange-500 rounded blur opacity-25 group-hover:opacity-60 transition duration-500"></div>
+                        <div class="relative border-2 border-orange-500 overflow-hidden bg-zinc-900 w-64 md:w-full aspect-square profile-img-container">
+                            <img src="https://i.ibb.co/LhYhZ9W/rei-chiquita.png" alt="Rei Plush" class="w-full h-full object-contain p-2">
+                        </div>
+                    </div>
+
+                    <div class="md:col-span-2 space-y-6">
+                        <div>
+                            <h2 class="text-5xl font-black text-white italic tracking-tighter uppercase leading-none">Maliqy</h2>
+                            <p class="text-orange-500 text-xs tracking-[0.4em] mt-2 font-bold underline">NEW PILOT CANDIDATE / MEDAN BRANCH</p>
+                        </div>
+
+                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                            <div class="border-l-2 border-orange-600 bg-zinc-900/30 p-3">
+                                <span class="block text-[9px] text-zinc-500 uppercase tracking-widest">Location</span>
+                                <span class="text-lg font-bold">Medan, Indonesia</span>
+                            </div>
+                            <div class="border-l-2 border-orange-600 bg-zinc-900/30 p-3">
+                                <span class="block text-[9px] text-zinc-500 uppercase tracking-widest">School</span>
+                                <span class="text-lg font-bold">Al-Amjad School</span>
+                            </div>
+                            <div class="border-l-2 border-orange-600 bg-zinc-900/30 p-3">
+                                <span class="block text-[9px] text-zinc-500 uppercase tracking-widest">Education</span>
+                                <span class="text-lg font-bold text-orange-400">8th Grade Student</span>
+                            </div>
+                            <div class="border-l-2 border-red-600 bg-zinc-900/30 p-3">
+                                <span class="block text-[9px] text-red-500 uppercase tracking-widest">Special Skill</span>
+                                <span class="text-lg font-bold">Boxing & Art</span>
+                            </div>
+                        </div>
+
+                        <div class="bg-orange-950/20 border border-orange-900/50 p-4 italic text-zinc-300 text-sm leading-relaxed">
+                            "I am a huge fan of <span class="text-orange-500 font-bold underline">Evangelion</span>. 
+                            Ready for neural synchronization."
+                        </div>
+
+                        <div class="flex items-center gap-4">
+                            <div class="status-bar flex-1 bg-zinc-800">
+                                <div class="status-fill w-[85%] h-full bg-orange-500 shadow-[0_0_10px_#fb923c]"></div>
+                            </div>
+                            <span class="text-[10px] font-black tracking-tighter text-white">SYNC 85%</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="read" class="content-section hidden-section">
+            <h2 class="text-2xl font-bold uppercase mb-6 border-l-8 border-orange-500 pl-4 tracking-widest">Data Archive</h2>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div class="data-card">
+                    <h3 class="font-bold text-white mb-2 underline">FILE: NEON_GENESIS.log</h3>
+                    <p class="text-sm opacity-80">Catatan sejarah pembentukan NERV dan proyek instrumentasi manusia.</p>
+                </div>
+                <div class="data-card">
+                    <h3 class="font-bold text-white mb-2 underline">FILE: SECOND_IMPACT.pdf</h3>
+                    <p class="text-sm opacity-80">Data rahasia mengenai kejadian di Antartika tahun 2000.</p>
+                </div>
+            </div>
+        </section>
+
+        <section id="watch" class="content-section hidden-section">
+            <h2 class="text-2xl font-bold uppercase mb-6 border-l-8 border-orange-500 pl-4 tracking-widest">Visual Sync</h2>
+            <div class="bg-zinc-900 border border-orange-600 aspect-video flex items-center justify-center">
+                <div class="text-center">
+                    <p class="text-xl font-bold animate-pulse">CONNECTING TO VIDEO FEED...</p>
+                    <p class="text-xs mt-2 opacity-50">ENCRYPTED STREAM LEVEL 4</p>
+                </div>
+            </div>
+        </section>
+
+        <section id="chars" class="content-section hidden-section">
+            <h2 class="text-2xl font-bold uppercase mb-6 border-l-8 border-orange-500 pl-4 tracking-widest">Bio Link</h2>
+            <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+                <div class="text-center border border-orange-900 p-4">
+                    <div class="w-20 h-20 bg-zinc-800 mx-auto mb-2 rounded-full border border-orange-500"></div>
+                    <span class="text-xs font-bold uppercase">Rei Ayanami</span>
+                </div>
+                <div class="text-center border border-orange-900 p-4">
+                    <div class="w-20 h-20 bg-zinc-800 mx-auto mb-2 rounded-full border border-orange-500"></div>
+                    <span class="text-xs font-bold uppercase">Asuka Langley</span>
+                </div>
+                <div class="text-center border border-orange-900 p-4">
+                    <div class="w-20 h-20 bg-zinc-800 mx-auto mb-2 rounded-full border border-orange-500"></div>
+                    <span class="text-xs font-bold uppercase">Shinji Ikari</span>
+                </div>
+                <div class="text-center border border-orange-900 p-4">
+                    <div class="w-20 h-20 bg-zinc-800 mx-auto mb-2 rounded-full border border-orange-500"></div>
+                    <span class="text-xs font-bold uppercase">Misato K.</span>
+                </div>
+            </div>
+        </section>
+
+        <section id="eva-angel" class="content-section hidden-section">
+            <h2 class="text-2xl font-bold uppercase mb-6 border-l-8 border-orange-500 pl-4 tracking-widest">Tactical Database</h2>
+            <div class="border border-red-900 p-6 bg-red-950/10">
+                <h3 class="text-red-500 font-bold mb-4">ANGEL DETECTION LIST:</h3>
+                <ul class="space-y-2 text-sm">
+                    <li>> 3rd Angel: SACHIEL - TERMINATED</li>
+                    <li>> 4th Angel: SHAMSHIEL - ACTIVE</li>
+                    <li>> 5th Angel: RAMIEL - SCANNING...</li>
+                </ul>
+            </div>
+        </section>
+
+    </main>
+
+    <script>
+        function show(id) {
+            // Sembunyikan semua section
+            document.querySelectorAll('.content-section').forEach(sec => {
+                sec.classList.add('hidden-section');
+            });
+            // Tampilkan section yang dipilih
+            const target = document.getElementById(id);
+            if(target) {
+                target.classList.remove('hidden-section');
+            }
+            // Scroll ke atas
+            window.scrollTo(0,0);
+        }
+
+        // Jalankan Profile secara default saat pertama kali buka
+        window.onload = function() {
+            show('profile');
+        }
+    </script>
+</body>
+</html>
